@@ -18,14 +18,14 @@ const Home = () => {
 
   useEffect(() => {
     fetchPostData();
-    setBlogs(JSON.parse(localStorage.getItem('list'))) 
+    setBlogs(JSON.parse(localStorage.getItem('list')) || []) 
   },[]);
 
   return (
     <div className={style.featuresContainer}>
       <h1 className={style.featuresTitle}>My Blogs</h1>
       <ul className={style.cards}>  
-        {blogs.map((item) => (
+        {blogs?.map((item) => (
           <li className={style.cards__item}>
             <div className={style.card}>
               <div className={style.icons}>
