@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from "react-router-dom";
 const Blogs = () => {
   let navigate = useNavigate();
@@ -7,6 +7,7 @@ const Blogs = () => {
   const [state, setState] = useState({
     title: "",
     image: "",
+    description:""
   });
 
   const postBtnStyle = {
@@ -49,11 +50,16 @@ const Blogs = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    localStorage.setItem("title", state.title);
-    localStorage.setItem("message", state.message);
-    localStorage.setItem("image", state.image);
-    setState({ title: "", image: "" });
-    navigate("/");
+    const items = (() => {
+      const fieldValue = localStorage.getItem('list');
+      return fieldValue === null
+        ? []
+        : JSON.parse(fieldValue);
+    })();
+    items.push({ title:state.title, image: state.image,description:state.description});
+    localStorage.setItem('list', JSON.stringify(items));
+    setState({ title: "", image: "",description:"" });
+      navigate("/");
   };
 
   return (
@@ -69,6 +75,15 @@ const Blogs = () => {
           placeholder="Enter Post Title"
           name="title"
           value={state.title}
+          onChange={handleInputChange}
+        />
+        <input
+          style={inputFields}
+          required
+          type="text"
+          placeholder="Enter Post description"
+          name="description"
+          value={state.description}
           onChange={handleInputChange}
         />
 

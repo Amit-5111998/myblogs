@@ -4,7 +4,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 const Home = () => {
   const [posts, setPosts] = useState([]);
-  console.log(posts);
+  const [blogs,setBlogs] =useState([]);
+  console.log(blogs);
   const fetchPostData = () => {
     try {
       axios
@@ -17,16 +18,27 @@ const Home = () => {
 
   useEffect(() => {
     fetchPostData();
-  });
+    setBlogs(JSON.parse(localStorage.getItem('list'))) 
+  },[]);
 
   return (
     <div className={style.featuresContainer}>
       <h1 className={style.featuresTitle}>My Blogs</h1>
-      <div style={{ textAlign: "center" }}>
-        <h2>{localStorage.getItem("title")}</h2>
-        <img src={localStorage.getItem("image")} alt="post" />
-      </div>
-
+      <ul className={style.cards}>  
+        {blogs.map((item) => (
+          <li className={style.cards__item}>
+            <div className={style.card}>
+              <div className={style.icons}>
+                <img src={item.image} alt="cardimg" />
+              </div>
+              <div className={style.card__content}>
+                <div className={style.card__title}>{item.title}</div>
+                <p className={style.card__text}>{item.description}</p>
+              </div>
+            </div>
+          </li>
+        ))}
+        </ul>
       <h1 className={style.featuresTitle}>Posts</h1>
       <ul className={style.cards}>
         {posts.map((item) => (
